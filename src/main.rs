@@ -1,6 +1,6 @@
 use std::{collections::HashMap, env, process::Command, thread, time::Duration};
 use serde_json::json;
-use log::{warn, error};
+use log::error;
 use reqwest::Client;
 
 fn get_disk_usage() -> Vec<HashMap<String, String>> {
