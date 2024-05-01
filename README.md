@@ -1,3 +1,7 @@
+![version](https://img.shields.io/badge/version-0.1.0-red)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Kaminyou/space-warner-rust/blob/main/LICENSE)
+![linting workflow](https://github.com/Kaminyou/space-warner-rust/actions/workflows/rust-clippy.yml/badge.svg)
+
 # space-warner-rust
 Send a message to your Slack whenever your space is becoming full!
 
