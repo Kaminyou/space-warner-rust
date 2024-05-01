@@ -54,6 +54,19 @@ async fn warn(client: &Client, filesystem: &str, used: &str) {
 #[tokio::main]
 async fn main() {
     let client = Client::new();
+
+    let trigger_interval: u64 = env::var("TRIGGER_INTERVAL")
+        .unwrap_or_else(|_| "60".to_string())
+        .parse()
+        .unwrap();
+
+    let warning_interval: u64 = env::var("WARNING_INTERVAL")
+        .unwrap_or_else(|_| "3600".to_string())
+        .parse()
+        .unwrap();
+
+    let mut warning_status: bool;
+
     loop {
         let disk_usage_info = get_disk_usage();
         let target_filesystems: Vec<String> = env::var("FILE_SYSTEMS")
@@ -63,14 +76,27 @@ async fn main() {
             .collect();
         let threshold: f32 = env::var("THRESHOLD").unwrap_or_else(|_| "1.0".to_string()).parse().unwrap();
 
+        let mut is_warning = false;
         for info in disk_usage_info {
             if target_filesystems.contains(&info["filesystem"]) {
                 let used = info["used%"].replace('%', "").parse::<f32>().unwrap();
                 if used >= threshold {
                     warn(&client, &info["filesystem"], &info["used%"]).await;
+                    is_warning = true;
                 }
             }
         }
-        thread::sleep(Duration::from_secs(60));
+
+        if is_warning {
+            warning_status = true;
+        } else {
+            warning_status = false;
+        }
+
+        if warning_status {
+            thread::sleep(Duration::from_secs(warning_interval));
+        } else {
+            thread::sleep(Duration::from_secs(trigger_interval));
+        }
     }
 }
