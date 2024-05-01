@@ -1,0 +1,18 @@
+version: "3"
+services:
+  space-warner-rust:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: space-warner-rust
+    environment:
+      - API_ENDPOINT=${API_ENDPOINT}
+      - FILE_SYSTEMS=${FILE_SYSTEMS}
+      - THRESHOLD=${THRESHOLD}
+    # working_dir: /root/app/
+    working_dir: /home/kaminyouho/repos/space-warner-rust
+    volumes:
+      - /home:/home  # make sure all volumes are added
+    stdin_open: true
+    tty: true
+    command: /bin/bash
