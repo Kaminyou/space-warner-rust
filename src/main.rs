@@ -92,3 +92,35 @@ async fn main() {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use mockito::{mock, server_url};
+    use reqwest::Client;
+
+    #[test]
+    fn test_get_disk_usage() {
+        let usage = get_disk_usage();
+        assert!(!usage.is_empty()); // Basic check to ensure some data is returned
+    }
+
+    #[tokio::test]
+    async fn test_warn() {
+        let client = Client::new();
+        let mock_server = mock("POST", "/")
+            .with_status(200)
+            .with_header("content-type", "application/json")
+            .with_body("{\"status\":\"ok\"}")
+            .create();
+
+        // Set API_ENDPOINT to the mock server URL
+        env::set_var("API_ENDPOINT", &server_url());
+
+        // Call the warn function
+        warn(&client, "testfs", "95%").await;
+
+        // Check if the mock was called
+        mock_server.assert();
+    }
+}
