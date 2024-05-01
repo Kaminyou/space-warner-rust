@@ -65,8 +65,6 @@ async fn main() {
         .parse()
         .unwrap();
 
-    let mut warning_status: bool;
-
     loop {
         let disk_usage_info = get_disk_usage();
         let target_filesystems: Vec<String> = env::var("FILE_SYSTEMS")
@@ -88,12 +86,6 @@ async fn main() {
         }
 
         if is_warning {
-            warning_status = true;
-        } else {
-            warning_status = false;
-        }
-
-        if warning_status {
             thread::sleep(Duration::from_secs(warning_interval));
         } else {
             thread::sleep(Duration::from_secs(trigger_interval));
