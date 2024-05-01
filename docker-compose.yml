@@ -11,6 +11,5 @@ services:
       - THRESHOLD=${THRESHOLD}
       - TRIGGER_INTERVAL=${TRIGGER_INTERVAL}
       - WARNING_INTERVAL=${WARNING_INTERVAL}
-    working_dir: /root/app/
     volumes:
       - /home:/home  # make sure all volumes are added
