@@ -9,10 +9,8 @@ services:
       - API_ENDPOINT=${API_ENDPOINT}
       - FILE_SYSTEMS=${FILE_SYSTEMS}
       - THRESHOLD=${THRESHOLD}
-    # working_dir: /root/app/
-    working_dir: /home/kaminyouho/repos/space-warner-rust
+      - TRIGGER_INTERVAL=${TRIGGER_INTERVAL}
+      - WARNING_INTERVAL=${WARNING_INTERVAL}
+    working_dir: /root/app/
     volumes:
       - /home:/home  # make sure all volumes are added
-    stdin_open: true
-    tty: true
-    command: /bin/bash
